@@ -13,6 +13,7 @@ import { filterUserForClient } from "~/server/helpers/filterUserForClient";
 import { type Post } from "@prisma/client";
 
 const addUserDataToPosts = async (posts: Post[]) => {
+
   const users = (
     await clerkClient.users.getUserList({
       userId: posts.map((post) => post.authorId),
@@ -20,7 +21,9 @@ const addUserDataToPosts = async (posts: Post[]) => {
     })
   ).map(filterUserForClient);
 
+
   return posts.map((post) => {
+
     const author = users.find((user) => user.id === post.authorId);
 
     if (!author?.username)
@@ -36,6 +39,7 @@ const addUserDataToPosts = async (posts: Post[]) => {
         username: author.username,
       },
     };
+
   });
 };
 

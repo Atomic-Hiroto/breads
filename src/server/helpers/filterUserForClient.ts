@@ -3,7 +3,8 @@ import { type User } from "@clerk/nextjs/dist/types/server";
 export const filterUserForClient = (user: User) => {
   return {
     id: user.id,
-    username: user.username,
+    username: user.username ?? "placeholder",
     profilePicture: user.imageUrl,
+    name: user.firstName + "-" + user.lastName
   };
 };

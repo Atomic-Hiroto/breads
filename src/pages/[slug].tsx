@@ -43,7 +43,7 @@ export default function ProfilePage({ username }: { username: string }) {
           />
         </div>
         <div className="h-[64px]" />
-        <div className="p-4 text-2xl font-bold">{`@${data.username}`}</div>
+        <div className="p-4 text-2xl font-bold">{`@${data.username=="placeholder" ? data.name : data.username}`}</div>
         <div className="border-b border-slate-400" />
         <ProfileFeed userId={data.id} />
       </Layout>
