@@ -7,7 +7,6 @@ import toast from "react-hot-toast";
 import { Layout } from "~/components/layout";
 import { PostView } from "~/components/PostView";
 
-
 const CreatePostWizard = () => {
   const { user } = useUser();
 
@@ -92,16 +91,15 @@ export default function Home() {
     <>
       <Layout>
         <div className="flex border-b border-slate-400 p-4">
-          {isSignedIn ? (
-            <CreatePostWizard />
-          ) : (
-            <div className="flex justify-center">
-              <SignInButton />
-            </div>
-          )}
-        </div>
-        {isSignedIn && <Feed/>}
-        {!isSignedIn && <div className="p-4" >Please Sign In to view the Feed.</div>}
+        {!isSignedIn && (
+          <div className="flex justify-center">
+            <SignInButton />
+          </div>
+        )}
+        {isSignedIn && <CreatePostWizard />}
+      </div>
+
+      <Feed />
       </Layout>
     </>
   );

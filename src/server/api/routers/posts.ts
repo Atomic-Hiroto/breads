@@ -12,7 +12,7 @@ import { Redis } from "@upstash/redis"; // see below for cloudflare and fastly a
 import { filterUserForClient } from "~/server/helpers/filterUserForClient";
 import { type Post } from "@prisma/client";
 
-const addUserDataToPosts = async (posts: Post[])=>{
+const addUserDataToPosts = async (posts: Post[]) => {
   const users = (
     await clerkClient.users.getUserList({
       userId: posts.map((post) => post.authorId),
@@ -37,7 +37,7 @@ const addUserDataToPosts = async (posts: Post[])=>{
       },
     };
   });
-}
+};
 
 // Create a new ratelimiter, that allows 3 requests per 1 minute
 const ratelimit = new Ratelimit({
@@ -61,6 +61,19 @@ export const postsRouter = createTRPCRouter({
 
     return addUserDataToPosts(posts);
   }),
+
+  getById: publicProcedure
+    .input(z.object({ newId: z.number() }))
+    .query(async ({ ctx, input }) => {
+      const post = await ctx.db.post.findUnique({
+        where: { id: input.newId },
+      });
+
+      if (!post) throw new TRPCError({ code: "NOT_FOUND" });
+
+      return (await addUserDataToPosts([post]))[0];
+    }),
+
   create: privateProcedure
     .input(
       z.object({
@@ -92,12 +105,14 @@ export const postsRouter = createTRPCRouter({
       }),
     )
     .query(({ ctx, input }) =>
-      ctx.db.post.findMany({
-        where: {
-          authorId: input.userId,
-        },
-        take: 100,
-        orderBy: [{ createdAt: "desc" }],
-      }).then(addUserDataToPosts),
+      ctx.db.post
+        .findMany({
+          where: {
+            authorId: input.userId,
+          },
+          take: 100,
+          orderBy: [{ createdAt: "desc" }],
+        })
+        .then(addUserDataToPosts),
     ),
 });
