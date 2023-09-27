@@ -13,7 +13,6 @@ import { filterUserForClient } from "~/server/helpers/filterUserForClient";
 import { type Post } from "@prisma/client";
 
 const addUserDataToPosts = async (posts: Post[]) => {
-
   const users = (
     await clerkClient.users.getUserList({
       userId: posts.map((post) => post.authorId),
@@ -21,9 +20,7 @@ const addUserDataToPosts = async (posts: Post[]) => {
     })
   ).map(filterUserForClient);
 
-
   return posts.map((post) => {
-
     const author = users.find((user) => user.id === post.authorId);
 
     if (!author?.username)
@@ -39,7 +36,6 @@ const addUserDataToPosts = async (posts: Post[]) => {
         username: author.username,
       },
     };
-
   });
 };
 
@@ -102,6 +98,30 @@ export const postsRouter = createTRPCRouter({
 
       return post;
     }),
+
+  delete: privateProcedure
+    .input(
+      z.object({
+        newId: z.number(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const post = await ctx.db.post.findUnique({
+        where: { id: input.newId },
+      });
+
+      if (!post) throw new TRPCError({ code: "NOT_FOUND" });
+
+      if (post.authorId !== ctx.userId)
+        throw new TRPCError({ code: "FORBIDDEN" });
+
+      await ctx.db.post.delete({
+        where: { id: input.newId },
+      });
+
+      return post;
+    }),
+
   getPostsByUserId: publicProcedure
     .input(
       z.object({
