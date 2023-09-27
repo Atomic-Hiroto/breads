@@ -1,4 +1,4 @@
-import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
+import { SignInButton, useUser } from "@clerk/nextjs";
 import { api } from "~/utils/api";
 import Image from "next/image";
 import { LoadingPage, LoadingSpinner } from "~/components/loading";
@@ -35,7 +35,7 @@ const CreatePostWizard = () => {
       />
       <input
         placeholder="Type your bread! 🍞"
-        className="grow bg-transparent outline-none"
+        className="bg-transparent outline-none w-full"
         value={input}
         onChange={(e) => {
           setInput(e.target.value);
@@ -53,7 +53,7 @@ const CreatePostWizard = () => {
           onClick={() => {
             mutate({ content: input });
           }}
-          className="border px-4 border-slate-400"
+          className="border px-4 border-slate-400 rounded"
         >
           Post
         </button>
@@ -98,7 +98,6 @@ export default function Home() {
           </div>
         )}
         {isSignedIn && <CreatePostWizard />}
-        {isSignedIn && <SignOutButton />}
       </div>
 
       <Feed />
