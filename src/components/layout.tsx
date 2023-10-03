@@ -1,5 +1,4 @@
 import { type PropsWithChildren } from "react";
-import breads from "../../public/bread.png"
 import Image from "next/image";
 import Link from "next/link";
 import { SignOutButton, useUser } from "@clerk/nextjs";
@@ -12,7 +11,7 @@ export const Layout = (props: PropsWithChildren) => {
       <div className="flex md:flex-col flex-row md:justify-start border-slate-400 justify-between">
         <Link href={"/"}>
         <div className="py-5 px-5 md:px-0 flex items-center">
-          <Image src={breads} alt={"Breads Logo"} width={46} height={46}/>
+          <Image src={"/images/bread.png"} alt={"Breads Logo"} width={46} height={46}/>
           <h1 className="text-2xl font-bold ml-2 justify-self-center">Breads</h1>
         </div>
         </Link>
