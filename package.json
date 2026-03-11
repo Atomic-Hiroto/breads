@@ -12,7 +12,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@clerk/nextjs": "^4.23.5",
+    "@clerk/nextjs": "^4.29.9",
     "@clerk/themes": "^1.7.6",
     "@prisma/client": "^5.1.1",
     "@t3-oss/env-nextjs": "^0.6.0",
@@ -50,6 +50,5 @@
   },
   "ct3aMetadata": {
     "initVersion": "7.20.2"
-  },
-  "packageManager": "npm@9.6.7"
+  }
 }
